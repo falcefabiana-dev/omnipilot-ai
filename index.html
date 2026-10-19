@@ -1,1 +1,104 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OmniPilot AI</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#f3f6fc;margin:0;color:#172b4d}
+main{max-width:600px;margin:auto;padding:22px}
+header{background:#143d78;color:white;padding:24px;border-radius:18px;text-align:center}
+h1{margin:0 0 8px}
+.card{background:white;padding:18px;border-radius:16px;margin-top:18px;box-shadow:0 2px 12px #142b5012}
+.experts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+button{border:0;border-radius:10px;padding:13px;font-size:15px;cursor:pointer}
+.expert{background:#e9eef8}
+.expert.active{background:#143d78;color:white}
+textarea{width:100%;min-height:110px;border:1px solid #ccd4e1;border-radius:10px;padding:12px;font-size:16px}
+.primary{width:100%;background:#143d78;color:white;margin-top:12px}
+.secondary{background:#e9eef8;width:100%;margin-top:8px}
+#answer{white-space:pre-wrap;line-height:1.6}
+small{color:#65748b}
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>✨ OmniPilot AI</h1>
+<p>Ton assistant, plusieurs expertises</p>
+</header>
+
+<section class="card">
+<h3>Choisis ton expert</h3>
+<div class="experts">
+<button class="expert active" onclick="choose('auto',this)">🚗 Auto</button>
+<button class="expert" onclick="choose('aviation',this)">✈️ Aviation</button>
+<button class="expert" onclick="choose('redaction',this)">✍️ Rédaction</button>
+</div>
+<p id="description">Expert automobile</p>
+</section>
+
+<section class="card">
+<h3>Pose ta question</h3>
+<textarea id="question" placeholder="Écris ta question ici..."></textarea>
+<button class="primary" onclick="respond()">Envoyer</button>
+<button class="secondary" onclick="example()">Question d'exemple</button>
+</section>
+
+<section class="card">
+<h3>Réponse</h3>
+<div id="answer">Ta réponse apparaîtra ici.</div>
+</section>
+
+<p><small>Prototype de démonstration sans connexion à une IA. N'entre pas de données personnelles.</small></p>
+</main>
+
+<script>
+let expert="auto";
+
+const data={
+auto:{
+description:"Expert automobile",
+question:"À quoi sert une vidange ?",
+answer:"Une vidange remplace l'huile usagée du moteur. Elle aide à protéger les pièces mécaniques."
+},
+aviation:{
+description:"Expert aviation",
+question:"Pourquoi les avions volent-ils ?",
+answer:"Les ailes créent une force appelée portance lorsque l'avion avance dans l'air."
+},
+redaction:{
+description:"Expert rédaction et traduction",
+question:"Rédige un e-mail pour demander un rendez-vous.",
+answer:"Objet : Demande de rendez-vous\n\nBonjour,\n\nJe souhaiterais prendre rendez-vous. Pourriez-vous m'indiquer vos disponibilités ?\n\nCordialement"
+}
+};
+
+function choose(id,button){
+expert=id;
+document.querySelectorAll(".expert").forEach(b=>b.classList.remove("active"));
+button.classList.add("active");
+document.getElementById("description").textContent=data[id].description;
+document.getElementById("question").value="";
+document.getElementById("answer").textContent="Ta réponse apparaîtra ici.";
+}
+
+function example(){
+document.getElementById("question").value=data[expert].question;
+}
+
+function respond(){
+const q=document.getElementById("question").value.trim();
+const a=document.getElementById("answer");
+if(!q){a.textContent="Écris d'abord une question.";return;}
+if(q.toLowerCase()===data[expert].question.toLowerCase()){
+a.textContent=data[expert].answer;
+}else{
+a.textContent="Cette version ne comprend que les questions d'exemple. Une véritable IA sera ajoutée plus tard.";
+}
+}
+</script>
+</body>
+</html>
